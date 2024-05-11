@@ -22,22 +22,26 @@ public class ProveedoresBDD {
 
 		try {
 			con = ConexionBDD.obtenerConexion();
-			ps = con.prepareStatement("SELECT identificador, tipo_documento_prov, nombre, telefono, correo, direccion " 
-				    + "FROM proveedores " 
-				    + "WHERE UPPER(nombre) LIKE ?");
+			ps = con.prepareStatement("SELECT prov.identificador, prov.tipo_documento_prov,td.descripcion,  prov.nombre, prov.telefono, prov.correo, prov.direccion " 
+					+ "FROM proveedores prov, tipo_documento td " 
+				    + "WHERE prov.tipo_documento_prov = td.codigo_doc " 
+				    + "and upper(nombre) LIKE ?");
 
 			ps.setString(1, "%"+subcadena.toUpperCase()+"%");
 			rs = ps.executeQuery();
 	
 			while (rs.next()) {
 				String identificador = rs.getString("identificador");
-				String tipoDocumento = rs.getString("tipo_documento_prov");
+				String codigoTipoDocumento = rs.getString("tipo_documento_prov");
+				String descripcionTipoDocumento = rs.getString("descripcion"); 
 				String nombre = rs.getString("nombre");
 				String telefono = rs.getString("telefono");
 				String correo = rs.getString("correo");
 				String direccion = rs.getString("direccion");
+				
+				TipoDocumento td = new TipoDocumento(codigoTipoDocumento, descripcionTipoDocumento);
 
-				proveedor = new Proveedor(identificador, tipoDocumento, nombre, telefono, correo, direccion);
+				proveedor = new Proveedor(identificador, td, nombre, telefono, correo, direccion);
 				proveedores.add(proveedor);
 			}
 
@@ -49,5 +53,37 @@ public class ProveedoresBDD {
 			throw new KrakeDevException("Error al Consultar. Detalle: " + e.getMessage());
 		}
 		return proveedores;
+	}
+	
+	public void crear(Proveedor proveedor) throws KrakeDevException {
+		Connection con = null;
+		try {
+			con = ConexionBDD.obtenerConexion();
+			PreparedStatement ps = con
+					.prepareStatement("INSERT INTO proveedores (identificador, tipo_documento_prov, nombre, telefono, correo, direccion) VALUES (?, ?, ?, ?, ?, ?)");
+
+			ps.setString(1, proveedor.getIdentificador());
+			ps.setObject(2, proveedor.getTipoDocumento().getCodigo_doc());
+			ps.setString(3, proveedor.getNombre());
+			ps.setString(4, proveedor.getTelefono());
+			ps.setString(5, proveedor.getCorreo());
+			ps.setString(6, proveedor.getDireccion());
+			
+			ps.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new KrakeDevException("Error al insertar cliente. Detalle: " + e.getMessage());
+		} catch (KrakeDevException e) {
+			throw e;
+		} finally {
+			if (con != null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 }
