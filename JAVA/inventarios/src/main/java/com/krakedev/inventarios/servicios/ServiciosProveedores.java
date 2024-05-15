@@ -11,7 +11,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.krakedev.inventarios.bdd.ProductosBDD;
 import com.krakedev.inventarios.bdd.ProveedoresBDD;
+import com.krakedev.inventarios.entidades.Producto;
 import com.krakedev.inventarios.entidades.Proveedor;
 import com.krakedev.inventarios.excepciones.KrakeDevException;
 
@@ -51,4 +53,5 @@ public class ServiciosProveedores {
 
 		}
 	}
+	
 }

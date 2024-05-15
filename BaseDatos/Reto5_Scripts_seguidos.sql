@@ -77,7 +77,7 @@ values('lb', 'libras', 'P');
 create table productos(
 codigo_prod serial not null,
 nombre varchar(100) not null,
-unidad_medida varchar(3) not null,
+udm varchar(3) not null,
 precio_venta money not null,
 tiene_iva boolean not null,
 coste money not null,
@@ -88,13 +88,13 @@ constraint pruductos_fk foreign key(categoria_prod)
 references categorias(codigo_cat)
 );
 
-insert into productos(nombre, unidad_medida, precio_venta, tiene_iva, coste, categoria_prod, stock)
+insert into productos(nombre, udm, precio_venta, tiene_iva, coste, categoria_prod, stock)
 values('Coca Cola pequeña', 'u', 0.5804, true, 0.3729, 7, 105);
-insert into productos(nombre, unidad_medida, precio_venta, tiene_iva, coste, categoria_prod, stock)
+insert into productos(nombre, udm, precio_venta, tiene_iva, coste, categoria_prod, stock)
 values('Salsa de tomate', 'kg', 0.95, true, 0.8736, 3, 0);
-insert into productos(nombre, unidad_medida, precio_venta, tiene_iva, coste, categoria_prod, stock)
+insert into productos(nombre, udm, precio_venta, tiene_iva, coste, categoria_prod, stock)
 values('Mostaza', 'kg', 0.95, true, 0.8936, 3, 0);
-insert into productos(nombre, unidad_medida, precio_venta, tiene_iva, coste, categoria_prod, stock)
+insert into productos(nombre, udm, precio_venta, tiene_iva, coste, categoria_prod, stock)
 values('Fuze Tea', 'u', 0.80, true, 0.70, 7, 49);
 
 create table tipo_documento(
