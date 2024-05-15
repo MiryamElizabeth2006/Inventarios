@@ -9,7 +9,6 @@ import java.util.ArrayList;
 
 import com.krakedev.inventarios.entidades.Categoria;
 import com.krakedev.inventarios.entidades.Producto;
-import com.krakedev.inventarios.entidades.Proveedor;
 import com.krakedev.inventarios.entidades.UnidadDeMedida;
 import com.krakedev.inventarios.excepciones.KrakeDevException;
 import com.krakedev.inventarios.utils.ConexionBDD;
@@ -71,7 +70,7 @@ public class ProductosBDD {
 			}
 
 		} catch (KrakeDevException e) {
-			e.printStackTrace(); 
+			e.printStackTrace();
 			throw e;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -80,19 +79,22 @@ public class ProductosBDD {
 		return productos;
 	}
 
-	public void crear(Proveedor proveedor) throws KrakeDevException {
+	// Crear Productos
+	public void crearProductos(Producto producto) throws KrakeDevException {
 		Connection con = null;
 		try {
 			con = ConexionBDD.obtenerConexion();
 			PreparedStatement ps = con.prepareStatement(
-					"INSERT INTO proveedores (identificador, tipo_documento_prov, nombre, telefono, correo, direccion) VALUES (?, ?, ?, ?, ?, ?)");
+					"INSERT INTO productos (codigo_prod, nombre, udm, precio_venta, tiene_iva, coste, categoria_prod, stock) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
 
-			ps.setString(1, proveedor.getIdentificador());
-			ps.setObject(2, proveedor.getTipoDocumento().getCodigo_doc());
-			ps.setString(3, proveedor.getNombre());
-			ps.setString(4, proveedor.getTelefono());
-			ps.setString(5, proveedor.getCorreo());
-			ps.setString(6, proveedor.getDireccion());
+			ps.setInt(1, producto.getCodigo());
+			ps.setString(2, producto.getNombre());
+			ps.setString(3, producto.getUnidadMedida().getNombre());
+			ps.setBigDecimal(4, producto.getPrecioVenta());
+			ps.setBoolean(5, producto.getTieneIva());
+			ps.setBigDecimal(6, producto.getCoste());
+			ps.setInt(7, producto.getCategoria().getCodigo());
+			ps.setInt(8, producto.getStock());
 
 			ps.executeUpdate();
 

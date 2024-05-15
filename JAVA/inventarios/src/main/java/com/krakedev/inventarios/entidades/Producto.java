@@ -60,7 +60,7 @@ public class Producto {
 		this.precioVenta = precioVenta;
 	}
 
-	public boolean isTieneIva() {
+	public boolean getTieneIva() {
 		return tieneIva;
 	}
 
