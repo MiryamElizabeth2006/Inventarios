@@ -79,4 +79,54 @@ public class PedidoBDD {
 			}
 		}
 	}
+	
+	//Modificar lo que se inserto en pedidios y detalle pedidos
+	public void modificar(Pedido pedido) throws KrakeDevException {
+		Connection con = null;
+		PreparedStatement ps = null;
+		PreparedStatement psDet = null;
+		
+		try {
+			con = ConexionBDD.obtenerConexion();
+			ps=con.prepareStatement("update cabecera_pedido set estado = 'R' WHERE codigoCP = ?");
+			ps.setInt(1, pedido.getCodigo());
+			
+			ps.executeUpdate();
+
+			ArrayList<DetallePedido> detallePedido = pedido.getDetalles();
+			DetallePedido det;
+			for(int i=0;i<detallePedido.size();i++) {
+				det = detallePedido.get(i);
+				psDet=con.prepareStatement("UPDATE detalle_pedido "
+						+ "	SET subtotal=?, cantidad_recibida=? "
+						+ "	WHERE codigo_det=?;");
+
+				psDet.setInt(2, det.getCantidadRecibida());
+				
+				BigDecimal pv = det.getProducto().getPrecioVenta();
+				BigDecimal cantidad = new BigDecimal(det.getCantidadRecibida());
+				BigDecimal subtotal = pv.multiply(cantidad);
+				psDet.setBigDecimal(1, subtotal);
+				
+				psDet.setInt(3, det.getCodigo());
+				
+				psDet.executeUpdate();	
+			
+			System.out.println("Detalle de pedio agregado"+psDet);
+			}	
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new KrakeDevException("Error al insertar cliente. Detalle: " + e.getMessage());
+		} catch (KrakeDevException e) {
+			throw e;
+		} finally {
+			if (con != null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
 }

@@ -7,8 +7,9 @@ public class DetallePedido {
 	private Pedido cabecera;
 	private Producto producto;
 	private int cantidadSolicitada;
-	private BigDecimal subtotal;
 	private int cantidadRecibida;
+	private BigDecimal subtotal;
+	
 
 	public DetallePedido() {
 	}
@@ -77,5 +78,5 @@ public class DetallePedido {
 		return "DetallePedido [codigo=" + codigo + ", cabecera=" + cabecera + ", producto=" + producto
 				+ ", cantidadSolicitada=" + cantidadSolicitada + ", subtotal=" + subtotal + ", cantidadRecibida="
 				+ cantidadRecibida + "]";
-	}
+	} 
 }
