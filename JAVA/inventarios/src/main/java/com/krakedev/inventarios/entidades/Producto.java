@@ -97,5 +97,9 @@ public class Producto {
 		return "Producto [codigo=" + codigo + ", nombre=" + nombre + ", unidadMedida=" + unidadMedida + ", precioVenta="
 				+ precioVenta + ", tieneIva=" + tieneIva + ", coste=" + coste + ", categoria=" + categoria + ", stock="
 				+ stock + "]";
+	}
+
+	public boolean isTieneIva() {
+		return true;
 	}      
 }
