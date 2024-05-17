@@ -138,11 +138,11 @@ insert into estados_pedido(codigo_ped, descripcion)
 values('R', 'Recibido');
 
 create table cabecera_pedido(
-numero serial not null,
+codigoCP serial not null,
 proveedor varchar(13) not null, 
 fecha TIMESTAMPTZ not null,
 estado char(1) not null,
-constraint cabecera_pedido_pk primary key(numero),
+constraint cabecera_pedido_pk primary key(codigoCP),
 	
 FOREIGN KEY (proveedor) REFERENCES proveedores(identificador),
 FOREIGN KEY (estado) REFERENCES estados_pedido(codigo_ped)	
@@ -158,18 +158,19 @@ codigo_det serial not null,
 cabecera_pedido  int not null,
 producto int not null,
 cantidad_solicitada int not null,
-subtotal money not null,
 cantidad_recibida int not null,
+subtotal money not null,
+
 constraint detalle_pedido_pk primary key(codigo_det),
-FOREIGN KEY (cabecera_pedido) REFERENCES cabecera_pedido(numero),
+FOREIGN KEY (cabecera_pedido) REFERENCES cabecera_pedido(codigoCP),
 FOREIGN KEY (producto) REFERENCES productos(codigo_prod)
 );
 
-insert into detalle_pedido(cabecera_pedido, producto, cantidad_solicitada, subtotal, cantidad_recibida)
+insert into detalle_pedido(cabecera_pedido, producto, cantidad_solicitada, cantidad_recibida, subtotal)
 values(1, 1, 100, 37.29, 100);
-insert into detalle_pedido(cabecera_pedido, producto, cantidad_solicitada, subtotal, cantidad_recibida)
+insert into detalle_pedido(cabecera_pedido, producto, cantidad_solicitada, cantidad_recibida, subtotal)
 values(1, 4, 50, 11.8, 50);
-insert into detalle_pedido(cabecera_pedido, producto, cantidad_solicitada, subtotal, cantidad_recibida)
+insert into detalle_pedido(cabecera_pedido, producto, cantidad_solicitada, cantidad_recibida, subtotal)
 values(2, 1, 10, 3.73, 10);
 
 create table cabecera_ventas(
